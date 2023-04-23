@@ -1,56 +1,73 @@
-const { Schema, model } = require("mongoose")
+const { Schema, model, Types } = require("mongoose")
 
-const reactionSchema = new Schema({
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        default: () => new Types.ObjectId()
+const reactionSchema = new Schema(
+    {
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId()
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            min_length: 1,
+            max_length: 280
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+            get: formatDate,
+        }
     },
-    reactionBody: {
-        type: String,
-        required: true,
-        min_length: 1,
-        max_length: 280
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-        get: format,
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
     }
-})
+)
 
-const thoughtSchema = new Schema({
-    thoughText: {
-        type: String,
-        required: true,
-        min_length: 1,
-        max_length: 280
+const thoughtSchema = new Schema(
+    {
+        thoughtText: {
+            type: String,
+            required: true,
+            min_length: 1,
+            max_length: 280
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now(),
+            get: formatDate,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        reactions: [reactionSchema],
+
     },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-        get: format,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    reactions: [reactionSchema]
-})
+    {
+        toJSON: {
+            virtuals: true,
+            getters: true
+        },
+        id: false
+    }
+)
 
 //formats a date to be yyyy/mm/dd
-function format(date) {
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    //this add a 0 before the day or month if it's only a one digit number
-    if (dd < 10) dd = '0' + dd;
-    if (mm < 10) mm = '0' + mm;
+function formatDate(date) {
+    //const date = new Date()
+    const yyyy = date.getFullYear()
+    const mm = date.getMonth() + 1
+    const dd = date.getDate()
 
-    return year + '/' + month + '/' + day
+    return (yyyy + '/' + mm + '/' + dd)
 }
 
 const Thought = model('thought', thoughtSchema)
