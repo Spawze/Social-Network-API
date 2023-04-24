@@ -1,6 +1,7 @@
 const { Thought, User } = require('../models')
 
 module.exports = {
+    //returns all thoughts in the DB
     async getAllThoughts(req, res) {
         try {
             const thoughts = await Thought.find().select('-__v')
@@ -11,6 +12,7 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+    //returns one thought, from ID in the req params
     async getThought(req, res) {
         try {
             const thought = await Thought.findOne({ _id: req.params.thoughtId }).select('-__v')
@@ -23,6 +25,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+    
+    //creates and returns a thought with the info in req body
     async createThought(req, res) {
         try {
             const userId = req.body.userId
@@ -47,6 +51,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //updates and returns a thought 
     async updateThought(req, res) {
         try {
             const updatedThought = await Thought.findOneAndUpdate(
@@ -63,6 +69,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //deletes and returns a thought
     async deleteThought(req, res) {
         try {
             const deletedThought = await Thought.findOneAndDelete({ _id: req.params.thoughtId })
@@ -76,6 +84,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //creates a reaction and returns the thought it was attached to
     async createReaction(req, res) {
         try {
             const findUser = await User.findOne({ _id: req.body.userId })
@@ -95,6 +105,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //deletes a reaction 
     async deleteReaction(req, res) {
         try {
             

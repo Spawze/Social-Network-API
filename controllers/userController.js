@@ -1,6 +1,7 @@
 const { User, Thought } = require('../models')
 
 module.exports = {
+    //returns all useres
     async getAllUsers(req, res) {
         try {
             const users = await User.find().select('-__v')
@@ -11,6 +12,7 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+    //returns one user
     async getUser(req, res) {
         try {
             const user = await User.findOne({ _id: req.params.userId }).select('-__v')
@@ -26,6 +28,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //create a user
     async createUser(req, res) {
         try {
             const user = await User.create(req.body)
@@ -36,6 +40,8 @@ module.exports = {
 
         }
     },
+
+    //delete a user
     async deleteUser(req, res) {
         try {
             const deletedUser = await User.findOneAndDelete({ _id: req.params.userId })
@@ -54,6 +60,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //update a user
     async updateUser(req, res) {
         try {
             const updatedUser = await User.findOneAndUpdate(
@@ -70,6 +78,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //add a user to another user's friend list
     async addFriend(req, res) {
         try {
             const userId = req.params.userId
@@ -94,6 +104,8 @@ module.exports = {
             res.status(500).json(error)
         }
     },
+
+    //remove a user from a user's friend list
     async removeFriend(req, res) {
         try {
             const userId = req.params.userId

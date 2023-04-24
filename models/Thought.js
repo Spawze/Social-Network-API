@@ -1,5 +1,6 @@
 const { Schema, model, Types } = require("mongoose")
 
+//reaction schema is only to be used in the thought schema
 const reactionSchema = new Schema(
     {
         reactionId: {
@@ -62,7 +63,6 @@ const thoughtSchema = new Schema(
 
 //formats a date to be yyyy/mm/dd
 function formatDate(date) {
-    //const date = new Date()
     const yyyy = date.getFullYear()
     const mm = date.getMonth() + 1
     const dd = date.getDate()
